@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "GW+gPeOB0+yjoI/6yiQBRh2RmMrwn0HyaJ1x7sFmkg7OUvpqHnwgzMl6gJmD37T61mSHvqRI68IDw6n6QUBw0Q==",
+  "dgSpecHash": "5u+6Llj+EKu/iGYP3W41ILsZX6XTGeo4rMQfZXrClZiNgSXdJuhFLy7R2k6d7QI1sZyahkWMyFjTCeIiyIHqkw==",
   "success": true,
   "projectFilePath": "D:\\Projects\\Net\\Tournaments\\Tournaments.App\\Tournaments.App.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\cpozo\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
