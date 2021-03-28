@@ -51,6 +51,12 @@ namespace Tournaments.Infraestructure
          };
       }
 
+      public Person GetPersonById(int id)
+      {
+         var person = PeopleDB.Items.Find(p => p.Id == id);
+         return person;
+      }
+
       public IEnumerable<PersonDTO> GetUsers(GetPersonsQuery query)
       {
          return PeopleDB.Items.Select(p => new PersonDTO

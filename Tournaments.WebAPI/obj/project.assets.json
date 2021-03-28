@@ -37,7 +37,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
-          "MediatR": "9.0.0"
+          "MediatR": "9.0.0",
+          "Tournaments.Domain": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Tournaments.App.dll": {}

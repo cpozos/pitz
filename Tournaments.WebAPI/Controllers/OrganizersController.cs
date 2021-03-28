@@ -5,18 +5,18 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Tournaments.App;
-using Tournaments.App.Persons;
+using Tournaments.App.Organizations;
 
 namespace Tournaments.WebAPI.Controllers
 {
    [ApiController]
    [Route("[controller]")]
-   public class PersonsController : ControllerBase
+   public class OrganizationsController : ControllerBase
    {
-      private readonly ILogger<PersonsController> _logger;
+      private readonly ILogger<OrganizationsController> _logger;
       private readonly IMediator _mediator;
 
-      public PersonsController(ILogger<PersonsController> logger, IMediator mediator)
+      public OrganizationsController(ILogger<OrganizationsController> logger, IMediator mediator)
       {
          _logger = logger;
          _mediator = mediator;
@@ -28,15 +28,15 @@ namespace Tournaments.WebAPI.Controllers
       /// <param name="request"></param>
       /// <returns></returns>
       [HttpPost]
-      [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<PersonDTO>))]
-      public async Task<IActionResult> Create([FromBody] CreatePersonCommand request)
+      [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<OrganizationDTO>))]
+      public async Task<IActionResult> Create([FromBody] CreateOrganizationCommand request)
       {
          var response = await _mediator.Send(request);
+
          if (response.WithError)
          {
             return BadRequest(response);
          }
-
          return Ok(response);
       }
 
@@ -48,19 +48,19 @@ namespace Tournaments.WebAPI.Controllers
       [HttpGet("{id}")]
       public async Task<IActionResult> Get(int id)
       {
-         var response = await _mediator.Send(new GetPersonQuery(id, ""));
-         if (response.Data is null)
+         var org = await _mediator.Send(new GetOrganizationQuery(id));
+         if (org.WithError)
          {
-            return NotFound(response);
+            return NotFound(org);
          }
 
-         return Ok(response);
+         return Ok(org);
       }
 
       [HttpGet]
       public async Task<IActionResult> Get()
       {
-         var response = await _mediator.Send(new GetPersonsQuery());
+         var response = await _mediator.Send(new GetOrganizationsQuery());
          return Ok(response);
       }
    }

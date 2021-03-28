@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tournaments.App.Persons;
+using Tournaments.Domain.Entities;
 
 namespace Tournaments.App.Repositories
 {
@@ -9,6 +10,8 @@ namespace Tournaments.App.Repositories
       Task<Response<PersonDTO>> AddAsync(CreatePersonCommand query);
 
       PersonDTO GetPerson(GetPersonQuery query);
+
+      Person GetPersonById(int id);
 
       IEnumerable<PersonDTO> GetUsers(GetPersonsQuery query);
    }

@@ -7,6 +7,6 @@ namespace Tournaments.Domain.Interfaces
    {
       int Id { get; set; }
       string Name { get; set; }
-      List<Tournament> OrginizedTournaments { get; set; }
+      ICollection<Tournament> OrginizedTournaments { get; set; }
    }
 }

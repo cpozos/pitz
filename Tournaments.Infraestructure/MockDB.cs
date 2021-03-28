@@ -24,4 +24,5 @@ namespace Tournaments.Infraestructure
    }
 
    public class PeopleDB : MockDB<Person> { }
+   public class OrganizationsDB : MockDB<Organization> { }
 }

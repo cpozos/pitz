@@ -31,6 +31,7 @@ namespace Tournaments.WebAPI
       public void ConfigureServices(IServiceCollection services)
       {
          services.AddScoped<AppLayer.Repositories.IPersonRepository, InfLayer.PersonRepository>();
+         services.AddScoped<AppLayer.Repositories.IOrganizationRepository, InfLayer.OrganizationRepository>();
 
          //MediatR
          services.AddMediatR(typeof(AppLayer.Persons.GetPersonQuery));

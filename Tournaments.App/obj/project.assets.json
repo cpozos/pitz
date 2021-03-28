@@ -10,6 +10,16 @@
         "runtime": {
           "lib/netstandard2.1/MediatR.dll": {}
         }
+      },
+      "Tournaments.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/Tournaments.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Tournaments.Domain.dll": {}
+        }
       }
     }
   },
@@ -31,11 +41,17 @@
         "mediatr.9.0.0.nupkg.sha512",
         "mediatr.nuspec"
       ]
+    },
+    "Tournaments.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Tournaments.Domain/Tournaments.Domain.csproj",
+      "msbuildProject": "../Tournaments.Domain/Tournaments.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "MediatR >= 9.0.0"
+      "MediatR >= 9.0.0",
+      "Tournaments.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -64,7 +80,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\Net\\Tournaments\\Tournaments.Domain\\Tournaments.Domain.csproj": {
+              "projectPath": "D:\\Projects\\Net\\Tournaments\\Tournaments.Domain\\Tournaments.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
