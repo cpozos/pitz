@@ -19,6 +19,8 @@ namespace Tournaments.App.Persons
       }
       public Task<Response<PersonDTO>> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
       {
+         // Validations
+
          return _repository.AddAsync(request);
       }
    }

@@ -17,14 +17,8 @@ namespace Tournaments.App.Persons
 
       public Task<Response<IEnumerable<PersonDTO>>> Handle(GetPersonsQuery request, CancellationToken cancellationToken)
       {
-         var person = _repository.GetUsers(request);
-
-         if (person == null)
-         {
-            return Task.FromResult(Response.Fail<IEnumerable<PersonDTO>>("Error returning Person"));
-         }
-
-         return Task.FromResult(Response.Ok(person));
+         var people = _repository.GetUsers(request);
+         return Task.FromResult(Response.Ok(people));
       }
    }
 }

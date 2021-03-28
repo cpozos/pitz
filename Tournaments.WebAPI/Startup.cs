@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using AppLayer = Tournaments.App;
+using InfLayer = Tournaments.Infraestructure;
+
 
 namespace Tournaments.WebAPI
 {
@@ -25,7 +30,10 @@ namespace Tournaments.WebAPI
       // This method gets called by the runtime. Use this method to add services to the container.
       public void ConfigureServices(IServiceCollection services)
       {
+         services.AddScoped<AppLayer.Repositories.IPersonRepository, InfLayer.PersonRepository>();
 
+         //MediatR
+         services.AddMediatR(typeof(AppLayer.Persons.GetPersonQuery));
          services.AddControllers();
       }
 

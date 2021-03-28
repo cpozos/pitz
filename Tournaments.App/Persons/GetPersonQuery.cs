@@ -26,7 +26,7 @@ namespace Tournaments.App.Persons
             return Task.FromResult(Response.Fail<PersonDTO>("Error returning Person"));
          }
 
-         if (string.IsNullOrWhiteSpace(person.FirstName))
+         if (person.Id is null)
          {
             return Task.FromResult(Response.Fail<PersonDTO>("Error returning Person"));
          }
