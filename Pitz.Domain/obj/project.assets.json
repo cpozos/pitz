@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj",
+      "projectUniqueName": "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\Pitz.Domain.csproj",
       "projectName": "Pitz.Domain",
-      "projectPath": "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj",
+      "projectPath": "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\Pitz.Domain.csproj",
       "packagesPath": "C:\\Users\\cpozo\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\obj\\",
+      "outputPath": "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cpozo\\AppData\\Roaming\\NuGet\\NuGet.Config",

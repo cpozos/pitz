@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "I7Sls7EBzFrp5X01ZkgiLVHSgRn/Sbn9zHpcagkTqvv2hnMZAF6n9o147FwXX44m8Lp/8uJbImLJ5uR39eFVhw==",
+  "dgSpecHash": "L05rHFBY12VfGK9CtRmsJLxZHFrdl94ZI27LEcb8iqo3REyX0lvoALlK13vtSrs3T0aKHYKozLuAXaGgFdbtLw==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\Net\\Tournaments\\Tournaments.Domain\\Tournaments.Domain.csproj",
+  "projectFilePath": "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

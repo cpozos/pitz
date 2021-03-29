@@ -11,6 +11,20 @@
           "lib/netstandard2.1/MediatR.dll": {}
         }
       },
+      "Pitz.App/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "MediatR": "9.0.0",
+          "Pitz.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Pitz.App.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Pitz.App.dll": {}
+        }
+      },
       "Pitz.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
@@ -42,6 +56,11 @@
         "mediatr.nuspec"
       ]
     },
+    "Pitz.App/1.0.0": {
+      "type": "project",
+      "path": "../Pitz.App/Pitz.App.csproj",
+      "msbuildProject": "../Pitz.App/Pitz.App.csproj"
+    },
     "Pitz.Domain/1.0.0": {
       "type": "project",
       "path": "../Tournaments.Domain/Pitz.Domain.csproj",
@@ -50,7 +69,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "MediatR >= 9.0.0",
+      "Pitz.App >= 1.0.0",
       "Pitz.Domain >= 1.0.0"
     ]
   },
@@ -60,11 +79,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\Pitz.App.csproj",
-      "projectName": "Pitz.App",
-      "projectPath": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\Pitz.App.csproj",
+      "projectUniqueName": "D:\\Projects\\Net\\Pitz\\Pitz.Infraestructure\\Pitz.Infraestructure.csproj",
+      "projectName": "Pitz.Infraestructure",
+      "projectPath": "D:\\Projects\\Net\\Pitz\\Pitz.Infraestructure\\Pitz.Infraestructure.csproj",
       "packagesPath": "C:\\Users\\cpozo\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\obj\\",
+      "outputPath": "D:\\Projects\\Net\\Pitz\\Pitz.Infraestructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cpozo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -81,6 +100,15 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
+            "D:\\Projects\\Net\\Pitz\\Pitz.App\\Pitz.App.csproj": {
+              "projectPath": "D:\\Projects\\Net\\Pitz\\Pitz.App\\Pitz.App.csproj"
+            },
+            "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\Pitz.Domain.csproj": {
+              "projectPath": "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\Pitz.Domain.csproj"
+            },
+            "D:\\Projects\\Net\\Pitz\\Tournaments.App\\Pitz.App.csproj": {
+              "projectPath": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\Pitz.App.csproj"
+            },
             "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj": {
               "projectPath": "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj"
             }
@@ -96,12 +124,6 @@
     "frameworks": {
       "net5.0": {
         "targetAlias": "net5.0",
-        "dependencies": {
-          "MediatR": {
-            "target": "Package",
-            "version": "[9.0.0, )"
-          }
-        },
         "imports": [
           "net461",
           "net462",

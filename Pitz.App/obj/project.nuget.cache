@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZeTkPya6zqvs9YvVM+hOLWWr1kV4o3Bhlr3ZwzEpwD0stISWNCzrDyd3t1EQDIT1vAeJuz/oBo5AKmWQzGivrw==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\Net\\Pitz\\Pitz.App\\Pitz.App.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cpozo\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

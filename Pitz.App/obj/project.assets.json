@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\Pitz.App.csproj",
+      "projectUniqueName": "D:\\Projects\\Net\\Pitz\\Pitz.App\\Pitz.App.csproj",
       "projectName": "Pitz.App",
-      "projectPath": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\Pitz.App.csproj",
+      "projectPath": "D:\\Projects\\Net\\Pitz\\Pitz.App\\Pitz.App.csproj",
       "packagesPath": "C:\\Users\\cpozo\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Net\\Pitz\\Tournaments.App\\obj\\",
+      "outputPath": "D:\\Projects\\Net\\Pitz\\Pitz.App\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cpozo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -81,6 +81,9 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
+            "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\Pitz.Domain.csproj": {
+              "projectPath": "D:\\Projects\\Net\\Pitz\\Pitz.Domain\\Pitz.Domain.csproj"
+            },
             "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj": {
               "projectPath": "D:\\Projects\\Net\\Pitz\\Tournaments.Domain\\Pitz.Domain.csproj"
             }
