@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Pitz.App;
 using Pitz.App.Persons;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pitz.WebAPI.Controllers
 {
@@ -62,6 +63,18 @@ namespace Pitz.WebAPI.Controllers
       {
          var response = await _mediator.Send(new GetPersonsQuery());
          return Ok(response);
+      }
+
+      [HttpPost]
+      [AllowAnonymous]
+      public async Task<IActionResult> LogIn([FromBody] UserAuth request)
+      {
+         if (!ModelState.IsValid)
+         {
+            return BadRequest(ModelState);
+         }
+
+         return Ok();
       }
    }
 }

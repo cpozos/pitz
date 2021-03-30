@@ -7,8 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Pitz.App\Pitz.App.csproj" />
     <ProjectReference Include="..\Pitz.Domain\Pitz.Domain.csproj" />
-    <ProjectReference Include="..\Tournaments.App\Pitz.App.csproj" />
-    <ProjectReference Include="..\Tournaments.Domain\Pitz.Domain.csproj" />
   </ItemGroup>
 
 </Project>

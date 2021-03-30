@@ -2,11 +2,13 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Pitz.App.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,20 @@ namespace Pitz.WebAPI
          services.AddScoped<AppLayer.Repositories.IPersonRepository, InfLayer.PersonRepository>();
          services.AddScoped<AppLayer.Repositories.IOrganizationRepository, InfLayer.OrganizationRepository>();
 
+         // AddIdentity registers the services
+         services.AddIdentity<CustomIdentityUser, IdentityRole>(config =>
+            {
+               // Remove restrictions
+               config.Password.RequiredLength = 4;
+               config.Password.RequireDigit = false;
+               config.Password.RequireNonAlphanumeric = false;
+               config.Password.RequireUppercase = false;
+               config.SignIn.RequireConfirmedEmail = true;
+            })
+            .AddUserManager<CustomUserManager>()
+            .AddDefaultTokenProviders();
+
+
          //MediatR
          services.AddMediatR(typeof(AppLayer.Persons.GetPersonQuery));
          services.AddControllers();
@@ -45,6 +61,15 @@ namespace Pitz.WebAPI
          {
             app.UseDeveloperExceptionPage();
          }
+
+         app.UseCors(config =>
+         {
+            config.WithOrigins("https://localhost:5001");
+            config.AllowAnyMethod();
+            config.AllowAnyHeader();
+         });
+
+         app.UseAuthentication();
 
          app.UseHttpsRedirection();
 
