@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,10 +15,12 @@ namespace Users.WebAPI.Controllers
    public class IdentityController : ControllerBase
    {
       private readonly IUserRepository _userRepository;
+      private readonly JwtService _jwtService;
 
-      public IdentityController(IUserRepository userRepository)
+      public IdentityController(IUserRepository userRepository, JwtService jwtService)
       {
          _userRepository = userRepository;
+         _jwtService = jwtService;
       }
 
       [HttpPost]
@@ -31,39 +33,18 @@ namespace Users.WebAPI.Controllers
          if (!result.Succeed)
             return Problem(result.Errors);
 
-         return BuildToken(request.Email);
-      }
+         var token = _jwtService.Generate(result.Data.Id, request.Name, request.Email);
 
-      private IActionResult BuildToken(string email)
-      {
-         try
+         if (string.IsNullOrWhiteSpace(token))
          {
-            var claims = new[]
-            {
-               new Claim(JwtRegisteredClaimNames.Email, email),
-               new Claim(JwtRegisteredClaimNames.UniqueName, "id")
-            };
-            var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
-            var key = new SymmetricSecurityKey(secretBytes);
-            var algorithm = SecurityAlgorithms.HmacSha256;
-            var signCred = new SigningCredentials(key, algorithm);
-
-            var token = new JwtSecurityToken(
-               Constants.Issuer,
-               Constants.Audiance,
-               claims,
-               notBefore: DateTime.Now,
-               expires: DateTime.Now.AddHours(2),
-               signCred);
-
-            var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
-            return Ok(new { accessToken = tokenJson }); ;
-         }
-         catch(Exception e)
-         {
-            var a = e.Message;
             return BadRequest();
          }
+
+         Response.Cookies.Append("pritz_jwt", token, new Microsoft.AspNetCore.Http.CookieOptions
+         {
+         });
+
+         return Ok(new { accessToken = token });
       }
 
       //private readonly UserManager<IdentityUser> _userManager;

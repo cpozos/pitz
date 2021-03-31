@@ -7,9 +7,9 @@ namespace Users.Infraestructure
 {
    public class UserRepository : IUserRepository
    {
-      public Task<Response> AddUserAsync(BasicRegisterRequest request)
+      public Task<DataResponse<User>> AddUserAsync(BasicRegisterRequest request)
       {
-         UsersDB.Add(new User
+         var user = new User
          {
             Name = request.Name,
             Credentials = new Credentials
@@ -20,12 +20,19 @@ namespace Users.Infraestructure
                   Password = request.Password
                }
             }
-         });
+         };
 
-         return Task.FromResult( new Response(true));
+         UsersDB.Add(user);
+
+         return Task.FromResult( new DataResponse<User>(true, user));
       }
 
-      public Task<DataResponse<User>> GetUserAsync(int id)
+      public Task<DataResponse<User>> GetUserByIdAsync(int id)
+      {
+         throw new System.NotImplementedException();
+      }
+
+      public Task<DataResponse<User>> GetUserByEmailAsync(string email)
       {
          throw new System.NotImplementedException();
       }
