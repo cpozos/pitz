@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Users.App;
 using Users.App.Services;
 using Users.Domain;
@@ -27,14 +28,16 @@ namespace Users.Infraestructure
          return Task.FromResult( new DataResponse<User>(true, user));
       }
 
-      public Task<DataResponse<User>> GetUserByIdAsync(int id)
-      {
-         throw new System.NotImplementedException();
-      }
-
       public Task<DataResponse<User>> GetUserByEmailAsync(string email)
       {
-         throw new System.NotImplementedException();
+         var item = UsersDB.Items.FirstOrDefault(i => string.Equals(i.Credentials?.Pitz?.Email, email));
+         return Task.FromResult(new DataResponse<User>(true, item));
+      }
+
+      public Task<DataResponse<User>> GetUserByIdAsync(int id)
+      {
+         var item = UsersDB.Items.FirstOrDefault(i => i.Id == id);
+         return Task.FromResult(new DataResponse<User>(true, item));
       }
    }
 }

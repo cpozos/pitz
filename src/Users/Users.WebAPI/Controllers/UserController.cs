@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Users.App;
 using Users.App.Services;
@@ -28,7 +29,9 @@ namespace Users.WebAPI.Controllers
       [Route("[controller]/{id}")]
       public async Task<IActionResult> GetUser(int id)
       {
-         var user = await _userRepository.GetUserByIdAsync(id);
+         var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+
+         var user = await _userRepository.GetUserByEmailAsync(email.Value);
          if (user is null)
             return NotFound();
 

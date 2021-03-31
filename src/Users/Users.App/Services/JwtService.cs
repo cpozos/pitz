@@ -13,12 +13,13 @@ namespace Users.App
       public const string _securedKey = "not_too_short_secret";
       private readonly byte[] _keyBytes = Encoding.UTF8.GetBytes(_securedKey);
 
-      public string Generate(int id, string email, string name)
+      public string Generate(int id, string name, string email)
       {
          try
          {
             var claims = new[]
             {
+               new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
                new Claim(JwtRegisteredClaimNames.Email, email),
                new Claim(JwtRegisteredClaimNames.Name, name),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -45,6 +46,7 @@ namespace Users.App
          }
       }
 
+      // no longer used because authorization uses authentication verification (setup)
       public JwtSecurityToken Verify(string jwt)
       {
          var tokenHandler = new JwtSecurityTokenHandler()

@@ -1,10 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Users.Domain;
 
 namespace Users.App
 {
@@ -15,7 +12,7 @@ namespace Users.App
          ScopeRequirement requirement)
       {
          // The scope must have originated from our issuer and must have the email
-         var scopeClaim = context.User.FindFirst(c => c.Type == JwtRegisteredClaimNames.Email && c.Issuer == requirement.Issuer);
+         var scopeClaim = context.User.FindFirst(c => c.Type == ClaimTypes.Email && c.Issuer == requirement.Issuer);
          if (scopeClaim == null || string.IsNullOrEmpty(scopeClaim.Value))
             return Task.CompletedTask;
 
