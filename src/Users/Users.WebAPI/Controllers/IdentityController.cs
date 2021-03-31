@@ -4,40 +4,66 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Users.App;
+using Users.App.Services;
 
 namespace Users.WebAPI.Controllers
 {
    [ApiController]
-   [Route("[controller]")]
+   [Route("[controller]/[action]")]
    public class IdentityController : ControllerBase
    {
+      private readonly IUserRepository _userRepository;
 
-
-      public IActionResult Authenticate()
+      public IdentityController(IUserRepository userRepository)
       {
-         var claims = new[]
+         _userRepository = userRepository;
+      }
+
+      [HttpPost]
+      public async Task<IActionResult> Register([FromBody] BasicRegisterRequest request)
+      {
+         if (!ModelState.IsValid)
+            return BadRequest();
+
+         var result = await _userRepository.AddUserAsync(request);
+         if (!result.Succeed)
+            return Problem(result.Errors);
+
+         return BuildToken(request.Email);
+      }
+
+      private IActionResult BuildToken(string email)
+      {
+         try
          {
-            new Claim(JwtRegisteredClaimNames.Sub, "sub_id"),
-            new Claim("Facebook says", "id")
-         };
+            var claims = new[]
+            {
+               new Claim(JwtRegisteredClaimNames.Email, email),
+               new Claim(JwtRegisteredClaimNames.UniqueName, "id")
+            };
+            var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+            var key = new SymmetricSecurityKey(secretBytes);
+            var algorithm = SecurityAlgorithms.HmacSha256;
+            var signCred = new SigningCredentials(key, algorithm);
 
-         var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
-         var key = new SymmetricSecurityKey(secretBytes);
-         var algorithm = SecurityAlgorithms.HmacSha256;
-         var signCred = new SigningCredentials(key, algorithm);
+            var token = new JwtSecurityToken(
+               Constants.Issuer,
+               Constants.Audiance,
+               claims,
+               notBefore: DateTime.Now,
+               expires: DateTime.Now.AddHours(2),
+               signCred);
 
-         var token = new JwtSecurityToken(
-            Constants.Issuer,
-            Constants.Audiance,
-            claims,
-            notBefore: DateTime.Now,
-            expires: DateTime.Now.AddHours(2),
-            signCred);
-
-         var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
-
-         return Ok( new { accessToken = tokenJson });
+            var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
+            return Ok(new { accessToken = tokenJson }); ;
+         }
+         catch(Exception e)
+         {
+            var a = e.Message;
+            return BadRequest();
+         }
       }
 
       //private readonly UserManager<IdentityUser> _userManager;
