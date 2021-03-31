@@ -8,9 +8,9 @@ namespace Users.App
 {
    public class JwtService
    {
-      private const string Issuer = "http://localhost:63154";
-      private const string Audiance = "http://localhost:3000/";
-      private const string _securedKey = "not_too_short_secret";
+      public const string Issuer = "http://localhost:63154";
+      public const string Audiance = "http://localhost:3000/";
+      public const string _securedKey = "not_too_short_secret";
       private readonly byte[] _keyBytes = Encoding.UTF8.GetBytes(_securedKey);
 
       public string Generate(int id, string email, string name)

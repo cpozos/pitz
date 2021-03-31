@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 using Users.App;
 using Users.App.Services;
@@ -24,22 +28,51 @@ namespace Users.WebAPI
       public void ConfigureServices(IServiceCollection services)
       {
          services.AddScoped<IUserRepository, UserRepository>();
+         services.AddScoped<JwtService>();
 
+         services.AddAuthentication(options =>
+            {
+               options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+               options.SaveToken = true;
+               options.RequireHttpsMetadata = false;
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                  ValidateIssuerSigningKey = true,
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtService._securedKey)),
+                  ValidateAudience = true,
+                  ValidAudience = JwtService.Audiance,
+                  ValidateIssuer = true,
+                  ValidIssuer = JwtService.Issuer,
+               };
+            });
 
-         //services.AddAuthentication("OAuth")
-         //   .AddJwtBearer("OAuth", config =>
-         //   {
-         //      var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
-         //      var key = new SymmetricSecurityKey(secretBytes);
+         services.AddAuthorization(options =>
+         {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+               .RequireAuthenticatedUser()
+               .Build();
+    
+           var scopes = new[] {
+             "read:users",
+             "read:tournaments",
+           };
 
-         //      config.TokenValidationParameters = new TokenValidationParameters
-         //      {
-         //         ValidIssuer = Constants.Issuer,
-         //         ValidAudience = Constants.Audiance,
-         //         IssuerSigningKey = key
-         //      };
-         //   });
+           Array.ForEach(scopes, scope =>
+             options.AddPolicy(scope,
+               policy => policy.Requirements.Add(
+                 new ScopeRequirement(JwtService.Issuer, scope)
+               )
+             )
+           );
+         });
 
+         // Authorization handlers.
+         services.AddScoped<IAuthorizationHandler, CustomAuthorizationHandler>();
          services.AddControllers();
       }
 
@@ -58,9 +91,11 @@ namespace Users.WebAPI
             config.AllowAnyMethod();
          });
 
+
          app.UseRouting();
 
-         //app.UseAuthentication();
+         app.UseAuthentication();
+         app.UseAuthorization();
 
          app.UseEndpoints(endpoints =>
          {

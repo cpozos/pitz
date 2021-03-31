@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Startup.cs~RF16f3326a.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Users.App\Users.App.csproj" />
     <ProjectReference Include="..\Users.Infraestructure\Users.Infraestructure.csproj" />
   </ItemGroup>
