@@ -11,7 +11,6 @@ namespace Users.WebAPI.Controllers
 {
    [Route("[controller]")]
    [ApiController]
-
    [Authorize]
    public class UsersController : ControllerBase
    {
@@ -26,7 +25,7 @@ namespace Users.WebAPI.Controllers
 
       [HttpGet]
       [Authorize]
-      [Route("[controller]/{id}")]
+      [Route("{id}")]
       public async Task<IActionResult> GetUser(int id)
       {
          var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);

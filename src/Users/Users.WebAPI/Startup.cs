@@ -91,10 +91,10 @@ namespace Users.WebAPI
             config.AllowAnyMethod();
          });
 
+         app.UseAuthentication();
 
          app.UseRouting();
-
-         app.UseAuthentication();
+         
          app.UseAuthorization();
 
          app.UseEndpoints(endpoints =>

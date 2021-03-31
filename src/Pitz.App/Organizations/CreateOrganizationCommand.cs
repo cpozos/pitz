@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Pitz.App.Repositories;
+using Pitz.App.Services;
 using Pitz.Domain.Entities;
 
 namespace Pitz.App.Organizations
@@ -15,13 +15,14 @@ namespace Pitz.App.Organizations
    public class CreatePersonCommandHandler : IHandlerWrapper<CreateOrganizationCommand, OrganizationDTO>
    {
       private readonly IOrganizationRepository _repository;
-      private readonly IPersonRepository _personRepository;
+      private readonly IUsersService _userService;
 
-      public CreatePersonCommandHandler(IOrganizationRepository repository, IPersonRepository personRepository)
+      public CreatePersonCommandHandler(IOrganizationRepository repository, IUsersService userService)
       {
          _repository = repository;
-         _personRepository = personRepository;
+         _userService = userService;
       }
+
       public async Task<Response<OrganizationDTO>> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
       {
          // Validations
@@ -48,7 +49,7 @@ namespace Pitz.App.Organizations
          {
             var res = Parallel.ForEach(integrants, (integrant, status) =>
             {
-               var person = _personRepository.GetPersonById(integrant.Id);
+               var person = _userService.GetPersonById(integrant.Id);
                if (person is null)
                   status.Stop();
             });

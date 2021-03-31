@@ -1,18 +1,13 @@
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Pitz.App.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 using AppLayer = Pitz.App;
 using InfLayer = Pitz.Infraestructure;
@@ -32,25 +27,39 @@ namespace Pitz.WebAPI
       // This method gets called by the runtime. Use this method to add services to the container.
       public void ConfigureServices(IServiceCollection services)
       {
-         services.AddScoped<AppLayer.Repositories.IPersonRepository, InfLayer.PersonRepository>();
          services.AddScoped<AppLayer.Repositories.IOrganizationRepository, InfLayer.OrganizationRepository>();
+         services.AddScoped<AppLayer.Services.IUsersService, InfLayer.UsersService>();
 
-         // AddIdentity registers the services
-         services.AddIdentity<CustomIdentityUser, IdentityRole>(config =>
+         services.AddAuthentication(options =>
             {
-               // Remove restrictions
-               config.Password.RequiredLength = 4;
-               config.Password.RequireDigit = false;
-               config.Password.RequireNonAlphanumeric = false;
-               config.Password.RequireUppercase = false;
-               config.SignIn.RequireConfirmedEmail = true;
+               options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddUserManager<CustomUserManager>()
-            .AddDefaultTokenProviders();
+            .AddJwtBearer(options =>
+            {
+               options.SaveToken = true;
+               options.RequireHttpsMetadata = false;
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                  ValidateIssuerSigningKey = true,
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtService._securedKey)),
+                  ValidateAudience = true,
+                  ValidAudience = JwtService.Audiance,
+                  ValidateIssuer = true,
+                  ValidIssuer = JwtService.Issuer,
+               };
+            });
 
+         services.AddAuthorization(options =>
+         {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+               .RequireAuthenticatedUser()
+               .Build();
+         });
 
          //MediatR
-         services.AddMediatR(typeof(AppLayer.Persons.GetPersonQuery));
+         services.AddMediatR(typeof(AppLayer.Response));
          services.AddControllers();
       }
 
