@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Users.App;
-using Users.App.Services;
+using Users.App.Contracts;
+using Users.App.Repositories;
 using Users.Domain;
 
 namespace Users.Infraestructure

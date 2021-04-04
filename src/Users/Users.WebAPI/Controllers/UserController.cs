@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Users.App;
-using Users.App.Services;
+using Users.App.Repositories;
 
 namespace Users.WebAPI.Controllers
 {

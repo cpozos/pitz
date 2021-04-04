@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using Users.App;
-using Users.App.Services;
+using Users.App.Repositories;
 using Users.Infraestructure;
 
 namespace Users.WebAPI
@@ -27,8 +27,25 @@ namespace Users.WebAPI
       // This method gets called by the runtime. Use this method to add services to the container.
       public void ConfigureServices(IServiceCollection services)
       {
+         // JWT Settings
+         var jwtService = new JwtSettings();
+         Configuration.Bind(nameof(jwtService), jwtService);
+         services.AddSingleton(jwtService);
+
          services.AddScoped<IUserRepository, UserRepository>();
-         services.AddScoped<JwtService>();
+
+
+         var tokenValidationParameters = new TokenValidationParameters
+         {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes((string)jwtService.Secret)),
+            ValidateAudience = true,
+            ValidAudience = jwtService.Audience,
+            ValidateIssuer = true,
+            ValidIssuer = jwtService.Issuer,
+         };
+
+         services.AddSingleton(tokenValidationParameters);
 
          services.AddAuthentication(options =>
             {
@@ -40,15 +57,7 @@ namespace Users.WebAPI
             {
                options.SaveToken = true;
                options.RequireHttpsMetadata = false;
-               options.TokenValidationParameters = new TokenValidationParameters
-               {
-                  ValidateIssuerSigningKey = true,
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtService._securedKey)),
-                  ValidateAudience = true,
-                  ValidAudience = JwtService.Audiance,
-                  ValidateIssuer = true,
-                  ValidIssuer = JwtService.Issuer,
-               };
+               options.TokenValidationParameters = tokenValidationParameters;
             });
 
          services.AddAuthorization(options =>
@@ -65,7 +74,7 @@ namespace Users.WebAPI
            Array.ForEach(scopes, scope =>
              options.AddPolicy(scope,
                policy => policy.Requirements.Add(
-                 new ScopeRequirement(JwtService.Issuer, scope)
+                 new ScopeRequirement(jwtService.Issuer, scope)
                )
              )
            );

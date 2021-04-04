@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Users.App.Contracts;
 using Users.Domain;
 
-namespace Users.App.Services
+namespace Users.App.Repositories
 {
    public interface IUserRepository
    {

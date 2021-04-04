@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Users.App;
-using Users.App.Services;
+using Users.App.Contracts;
+using Users.App.Repositories;
 
 namespace Users.WebAPI.Controllers
 {
@@ -19,7 +17,7 @@ namespace Users.WebAPI.Controllers
       private readonly IUserRepository _userRepository;
       private readonly JwtService _jwtService;
 
-      public IdentityController(IUserRepository userRepository, JwtService jwtService)
+      public IdentityController(IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository, JwtService jwtService)
       {
          _userRepository = userRepository;
          _jwtService = jwtService;
@@ -31,23 +29,56 @@ namespace Users.WebAPI.Controllers
          if (!ModelState.IsValid)
             return BadRequest();
 
-         var result = await _userRepository.AddUserAsync(request);
-         if (!result.Succeed)
-            return Problem(result.Errors);
+         var addUserResult = await _userRepository.AddUserAsync(request);
+         if (!addUserResult.Succeed)
+            return Problem(addUserResult.Errors);
+         var user = addUserResult.Data;
 
-         var token = _jwtService.Generate(result.Data.Id, request.Name, request.Email);
+         // Generates tokens
+         var generateTokensResult = _jwtService.Generate(user.Id, request.Name, request.Email);
+         if (generateTokensResult.Succeed)
+            return BadRequest(generateTokensResult.Errors);
+         var tokens = generateTokensResult.Data;
 
-         if (string.IsNullOrWhiteSpace(token))
-         {
-            return BadRequest();
-         }
-
-         Response.Cookies.Append("pritz_jwt", token, new Microsoft.AspNetCore.Http.CookieOptions
+         // Cookies
+         Response.Cookies.Append("pritz_jwt", tokens.Token, new Microsoft.AspNetCore.Http.CookieOptions
          {
          });
 
-         return Ok(new { accessToken = token });
+         return Ok(tokens);
       }
+
+      [HttpPost]
+      public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+      {
+         //TODO: join getUserIdTask and use of user repository in one single task.
+
+         var getUserIdTask = _jwtService.GetClaimValueAsync(request.Token, JwtRegisteredClaimNames.Sub);
+         var response = await _jwtService.ValidateRefreshTokenAsync(request.Token, request.RefreshToken);
+         if (!response.Succeed)
+         {
+            return BadRequest(response.Errors);
+         }
+
+         var userId = int.Parse(await getUserIdTask);
+         var getUserResponse = await _userRepository.GetUserByIdAsync(userId);
+         if (!getUserResponse.Succeed)
+         {
+            return BadRequest(getUserResponse.Errors);
+         }
+         var user = getUserResponse.Data;
+
+         // Generates tokens
+         var generateTokensResult = _jwtService.Generate(user.Id, user.Name, user.Credentials.Pitz.Email);
+         if (generateTokensResult.Succeed)
+            return BadRequest(generateTokensResult.Errors);
+         var tokens = generateTokensResult.Data;
+
+
+         return Ok(tokens);
+      }
+
+
 
       //private readonly UserManager<IdentityUser> _userManager;
       //private readonly SignInManager<IdentityUser> _signInManager;
