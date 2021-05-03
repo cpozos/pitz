@@ -5,13 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Domain", "Idenityt.Domain\Identity.Domain.csproj", "{063FE652-86D0-4595-96DF-995610E1561F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{999D7E8F-3CAF-4F28-99BC-0065AC405BE0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{402978B5-F435-44A7-8290-C162F21DFB5F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.App", "Identity.App\Identity.App.csproj", "{64BBC5E1-E051-4D3F-8032-B10851C931F1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructure", "Infraestructure", "{82D0D874-59E0-47E1-9CE9-CB689CA886A9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Infraestructure", "Identity.Infraestructure\Identity.Infraestructure.csproj", "{B110E509-194A-4052-93AC-33124E94D8EF}"
 EndProject
@@ -42,11 +36,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{063FE652-86D0-4595-96DF-995610E1561F} = {999D7E8F-3CAF-4F28-99BC-0065AC405BE0}
-		{64BBC5E1-E051-4D3F-8032-B10851C931F1} = {402978B5-F435-44A7-8290-C162F21DFB5F}
-		{B110E509-194A-4052-93AC-33124E94D8EF} = {82D0D874-59E0-47E1-9CE9-CB689CA886A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E9BA9F9-3F15-4DC6-897C-93E85D712A92}
